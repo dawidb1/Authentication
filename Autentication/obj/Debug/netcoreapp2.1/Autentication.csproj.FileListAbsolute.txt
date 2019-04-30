@@ -1,0 +1,14 @@
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.csproj.CoreCompileInputs.cache
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.AssemblyInfoInputs.cache
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.AssemblyInfo.cs
+C:\Users\Dawid\source\repos\Autentication\Autentication\bin\Debug\netcoreapp2.1\Autentication.deps.json
+C:\Users\Dawid\source\repos\Autentication\Autentication\bin\Debug\netcoreapp2.1\Autentication.runtimeconfig.json
+C:\Users\Dawid\source\repos\Autentication\Autentication\bin\Debug\netcoreapp2.1\Autentication.runtimeconfig.dev.json
+C:\Users\Dawid\source\repos\Autentication\Autentication\bin\Debug\netcoreapp2.1\Autentication.dll
+C:\Users\Dawid\source\repos\Autentication\Autentication\bin\Debug\netcoreapp2.1\Autentication.pdb
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.csprojAssemblyReference.cache
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.RazorAssemblyInfo.cache
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.RazorAssemblyInfo.cs
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.RazorTargetAssemblyInfo.cache
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.dll
+C:\Users\Dawid\source\repos\Autentication\Autentication\obj\Debug\netcoreapp2.1\Autentication.pdb
