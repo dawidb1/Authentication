@@ -1,4 +1,5 @@
 ﻿using Autentication.Data;
+using Authentication.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
 
 namespace Autentication
@@ -25,10 +27,16 @@ namespace Autentication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSwaggerGen(c =>
+            c.SwaggerDoc(Variables.Swagger.Version, new Info
+            {
+                Title = Variables.Swagger.Title,
+                Description = Variables.Swagger.Description
+            }));
 
-            var conn = Configuration.GetConnectionString("DefaultConnection");
+            var conn = Configuration.GetConnectionString(Variables.Configuration.DefaultConnection);
             services.AddDbContext<ApplicationDbContext>(options
-                => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                => options.UseSqlServer(Configuration.GetConnectionString(Variables.Configuration.DefaultConnection)));
             services.AddIdentity<ApplicationUser, IdentityRole>(options
                 =>
             {
@@ -41,7 +49,6 @@ namespace Autentication
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            var securityKey = "mySecurityKeydsfasdfasfasfasf.in";
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,9 +63,9 @@ namespace Autentication
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = "Biometria",
-                    ValidIssuer = "Biometria",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey))
+                    ValidAudience = Variables.Configuration.ClientAudience,
+                    ValidIssuer = Variables.Configuration.ClientIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Variables.Configuration.SecurityKey))
                 };
             });
         }
@@ -75,6 +82,9 @@ namespace Autentication
 
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            c.SwaggerEndpoint(Variables.Swagger.Path, Variables.Swagger.Title));
         }
     }
 }

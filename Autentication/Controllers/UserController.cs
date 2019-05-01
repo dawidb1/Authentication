@@ -56,9 +56,6 @@ namespace Authentication.Controllers
 
         private ApplicationUser EditApplicationUser(ApplicationUser appUser, EditUserModel editUser)
         {
-            appUser.FirstName = editUser.FirstName;
-            appUser.LastName = editUser.LastName;
-            appUser.Email = editUser.Email;
             appUser.UserName = editUser.Login;
 
             return appUser;

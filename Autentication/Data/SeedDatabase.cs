@@ -19,12 +19,8 @@ namespace Autentication.Data
             {
                 ApplicationUser user = new ApplicationUser()
                 {
-                    Email = "admin@biometria.pl",
                     SecurityStamp = Guid.NewGuid().ToString(),
                     UserName = "admin",
-                    FirstName = "Dawid",
-                    LastName = "Baranski",
-                    Status = false
                 };
                 await userManager.CreateAsync(user);
                 await userManager.AddPasswordAsync(user, "admin123");

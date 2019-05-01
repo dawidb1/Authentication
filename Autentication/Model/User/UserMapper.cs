@@ -10,10 +10,6 @@ namespace Authentication.Model.User
             return new ApplicationUser()
             {
                 UserName = addUser.Login,
-                Email = addUser.Email,
-                FirstName = addUser.FirstName,
-                LastName = addUser.LastName,
-                Status = false,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
         }
