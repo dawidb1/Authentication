@@ -9,7 +9,7 @@ namespace Authentication.Model.User
         {
             return new ApplicationUser()
             {
-                UserName = addUser.Login,
+                UserName = addUser.Username,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
         }

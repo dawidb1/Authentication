@@ -31,7 +31,8 @@ namespace Autentication
             c.SwaggerDoc(Variables.Swagger.Version, new Info
             {
                 Title = Variables.Swagger.Title,
-                Description = Variables.Swagger.Description
+                Description = Variables.Swagger.Description,
+                Version = Variables.Swagger.Version
             }));
 
             var conn = Configuration.GetConnectionString(Variables.Configuration.DefaultConnection);
