@@ -10,6 +10,9 @@ namespace Autentication.Data
     {
         public static async Task Initialize(IServiceProvider serviceProvider)
         {
+            string adminUsername = "admin";
+            string adminPassword = "admin123";
+
             var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
@@ -20,10 +23,10 @@ namespace Autentication.Data
                 ApplicationUser user = new ApplicationUser()
                 {
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = "admin",
+                    UserName = adminUsername,
                 };
                 await userManager.CreateAsync(user);
-                await userManager.AddPasswordAsync(user, "admin123");
+                await userManager.AddPasswordAsync(user, adminPassword);
             }
         }
     }
