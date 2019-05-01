@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Autentication.Data;
+﻿using Autentication.Data;
 using Authentication.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Authentication.Controllers
 {
@@ -28,7 +24,7 @@ namespace Authentication.Controllers
 
         public ActionResult GetToken()
         {
-            
+
             return null; //TODO 
         }
 
@@ -38,39 +34,69 @@ namespace Authentication.Controllers
         {
             var user = await this.userManager.FindByNameAsync(model.Username);
 
-            if (user != null && await this.userManager.CheckPasswordAsync(user, model.Password))
+            if (await this.IsUserAndPasswordValid(user, model.Password))
             {
+                var claims = GetClaims(user.UserName);
+                var symetricSecurityKey = GetSymmetricSecurityKey();
+                var token = GetToken(symetricSecurityKey, claims);
 
-                //generate claims 
-                var claims = new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+                return Ok(WritenToken(token));
+            }
 
-                // security key 
-                var securityKey = "mySecurityKeydsfasdfasfasfasf.in";
-                var symetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+            return Unauthorized();
+        }
 
-                // create token
-                var token = new JwtSecurityToken(
+        private async Task<bool> IsUserAndPasswordValid(ApplicationUser user, string password)
+        {
+            return (user != null && await this.userManager.CheckPasswordAsync(user, password));
+        }
+
+        private JwtSecurityToken GetToken(SymmetricSecurityKey key, Claim[] claims)
+        {
+            return new JwtSecurityToken(
                         issuer: "Biometria",
                         audience: "Biometria",
                         expires: DateTime.Now.AddHours(1),
                         claims: claims,
-                        signingCredentials: new SigningCredentials(symetricSecurityKey, SecurityAlgorithms.HmacSha256)
+                        signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
                     );
+        }
 
-                var writenToken = new JwtSecurityTokenHandler().WriteToken(token);
+        private object WritenToken(JwtSecurityToken token)
+        {
+            var writenToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-                return Ok(new
-                {
-                    token = writenToken,
-                    expiration = token.ValidTo
-                });
-            }
+            return new
+            {
+                token = writenToken,
+                expiration = token.ValidTo
+            };
+        }
 
-            return Unauthorized();
+        private Claim[] GetClaims(string username)
+        {
+            return new[]
+               {
+                    new Claim(JwtRegisteredClaimNames.Sub, username),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
+        }
+
+        private SymmetricSecurityKey GetSymmetricSecurityKey()
+        {
+            var securityKey = "mySecurityKeydsfasdfasfasfasf.in";
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+        }
+
+        public async Task<IActionResult> AddUser([FromBody] ApplicationUser user)
+        {
+            user.SecurityStamp = Guid.NewGuid().ToString();
+            user.Status = false;
+
+            await userManager.CreateAsync(user);
+            await userManager.AddPasswordAsync(user, "admin123");
+
+            return Ok(user);
         }
     }
 }
