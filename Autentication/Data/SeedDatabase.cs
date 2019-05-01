@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +8,7 @@ namespace Autentication.Data
 {
     public class SeedDatabase
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async Task Initialize(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -22,9 +21,13 @@ namespace Autentication.Data
                 {
                     Email = "admin@biometria.pl",
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = "admin"
+                    UserName = "admin",
+                    FirstName = "Dawid",
+                    LastName = "Baranski",
+                    Status = false
                 };
-                userManager.CreateAsync(user, "admin123");
+                await userManager.CreateAsync(user);
+                await userManager.AddPasswordAsync(user, "admin123");
             }
         }
     }
